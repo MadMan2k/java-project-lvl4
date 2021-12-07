@@ -1,0 +1,30 @@
+name: Java CI
+
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up openJDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '16'
+      - name: Build with Gradle
+        run: make build
+
+      - run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      - run: chmod +x ./cc-test-reporter
+      - run: ./cc-test-reporter before-build
+      - run: make build
+      - run: ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
+        env:
+          JACOCO_SOURCE_PATH: src/main/java
+      - run: ./cc-test-reporter upload-coverage
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPORTER_ID }}
