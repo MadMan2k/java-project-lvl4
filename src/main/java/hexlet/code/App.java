@@ -3,8 +3,10 @@ package hexlet.code;
 import io.javalin.Javalin;
 
 public class App {
+    private static final int PORT = 7000;
+
     public static void main(String[] args) {
-        getApp().start(7000);
+        getApp().start(PORT);
     }
 
     private static Javalin getApp() {
