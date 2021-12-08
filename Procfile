@@ -1,1 +1,1 @@
-web: sh build/install/app/bin/app -p $PORT
+web: sh build/install/app/bin/app
