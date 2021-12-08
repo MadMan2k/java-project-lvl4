@@ -4,10 +4,10 @@ import io.javalin.Javalin;
 
 public class App {
 //    private static final int PORT = 7000;
+    private static String s = System.getenv().getOrDefault("PORT", "4000");
 
     public static void main(String[] args) {
-        System.getenv().getOrDefault("PORT", "4000");
-        getApp().start();
+        getApp().start(Integer.parseInt(s));
     }
 
     private static Javalin getApp() {
