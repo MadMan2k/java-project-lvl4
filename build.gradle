@@ -40,6 +40,9 @@ test {
 //  showStandardStreams true
 //}
 
+task stage(dependsOn: ['clean', 'installDist'])
+installDist.mustRunAfter clean
+
 jacocoTestReport {
   dependsOn test
   reports {
