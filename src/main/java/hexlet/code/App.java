@@ -6,9 +6,7 @@ public class App {
 //    private static final int PORT = 7000;
 
     public static void main(String[] args) {
-
         getApp().start();
-        
     }
 
     private static Javalin getApp() {
