@@ -21,8 +21,10 @@ public class App {
             JavalinThymeleaf.configure(getTemplateEngine());
         });
 
+//        app.get("/", ctx -> ctx.result("Hello World"));
 
-        app.get("/", ctx -> ctx.result("Hello World"));
+        app.get("/", ctx -> ctx.render("index.html"));
+
         return app;
     }
 
