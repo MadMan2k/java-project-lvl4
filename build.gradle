@@ -26,6 +26,9 @@ dependencies {
   implementation 'io.javalin:javalin:4.0.1'
   implementation 'org.slf4j:slf4j-simple:1.7.31'
 
+  implementation 'com.h2database:h2:1.4.200'
+  implementation 'org.postgresql:postgresql:42.2.24'
+
   implementation 'io.ebean:ebean:12.12.1'
   implementation 'io.ebean:ebean-querybean:12.11.5'
   implementation 'io.ebean:ebean-annotation:7.3'
