@@ -59,6 +59,11 @@ test {
 task stage(dependsOn: ['clean', 'installDist'])
 installDist.mustRunAfter clean
 
+task generateMigrations(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'hexlet.code.GenerateDbMigration'
+}
+
 jacocoTestReport {
   dependsOn test
   reports {
