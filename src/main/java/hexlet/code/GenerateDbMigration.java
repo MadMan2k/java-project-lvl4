@@ -8,6 +8,7 @@ public class GenerateDbMigration {
 
     /**
      * Generate the DDL for the next DB migration.
+     * @param args are input arguments
      */
     public static void main(String[] args) throws IOException {
 

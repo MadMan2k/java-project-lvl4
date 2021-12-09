@@ -1,7 +1,6 @@
 package hexlet.code.model;
 
 import io.ebean.Model;
-import org.h2.util.CurrentTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,16 +26,22 @@ public class Url extends Model {
     @Column(name = "created_at")
     private Date createdAt;
 
-    public Url(String name) {
-        this.name = name;
+    public Url(String s) {
+        this.name = s;
     }
 
+    /**
+     * Save with current date.
+     */
     @Override
     public void save() {
         createdAt();
         super.save();
     }
 
+    /**
+     * Current date for save().
+     */
     @PrePersist
     void createdAt() {
         this.createdAt = new Date();
