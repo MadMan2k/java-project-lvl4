@@ -18,10 +18,16 @@ public class App {
     private static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
             config.enableDevLogging();
+            config.enableWebjars();
             JavalinThymeleaf.configure(getTemplateEngine());
         });
 //        app.get("/", ctx -> ctx.result("Hello World"));
+
         app.get("/", ctx -> ctx.render("index.html"));
+
+//        app.before(ctx -> {
+//            ctx.attribute("ctx", ctx);
+//        });
 
         return app;
     }
