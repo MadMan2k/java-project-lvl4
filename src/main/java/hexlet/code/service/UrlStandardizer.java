@@ -6,10 +6,7 @@ public class UrlStandardizer {
     public static String standardize(String inputUrl) {
         inputUrl = inputUrl.toLowerCase(Locale.ROOT);
 
-        if (!(inputUrl.startsWith("https://www."))) {
-            inputUrl = "https://www." + inputUrl;
-        }
-        if (inputUrl.startsWith("www.")) {
+        if (!(inputUrl.startsWith("https://"))) {
             inputUrl = "https://" + inputUrl;
         }
 

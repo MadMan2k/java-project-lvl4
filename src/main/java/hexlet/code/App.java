@@ -46,8 +46,7 @@ public class App {
 
         addRoutes(app);
 
-        app.before(ctx -> {ctx.attribute("ctx", ctx);
-        });
+        app.before(ctx -> ctx.attribute("ctx", ctx));
 
 //        app.get("/", ctx -> ctx.render("index.html"));
 
@@ -55,17 +54,17 @@ public class App {
     }
 
     public static void addRoutes(Javalin app) {
-        app.get("/", MainController.welcome);
-        app.get("/about", MainController.about);
+        app.get("/", MainController.getWelcome());
+        app.get("/about", MainController.getAbout());
 
         app.routes(() -> {
             path("urls", () -> {
-                get(ArticleController.listArticles);
-                post(ArticleController.createArticle);
+                get(ArticleController.getListArticles());
+                post(ArticleController.getCreateArticle());
                 // Handler not exist in my app
 //                get("new", ArticleController.newArticle);
                 path("{id}", () -> {
-                    get(ArticleController.showArticle);
+                    get(ArticleController.getShowArticle());
                 });
             });
         });

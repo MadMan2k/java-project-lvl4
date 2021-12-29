@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout.html}">
+
+<section layout:fragment="header">
+  Просмотр статьи
+</section>
+
+<section layout:fragment="content" th:object="${urlModel}">
+
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <h2 th:text="*{getName()}"></h2>
+    </div>
+    <div class="card-body bg-light">
+      <p class="lead" th:text="*{getResponseCode()}"></p>
+    </div>
+
+      <div class="container-lg mt-5">
+
+        <h1 class="text-light bg-dark text-center">
+            <span>Сайт [</span>
+            <span th:if="*{#strings.startsWith(getName(), 'https://www.')}">
+                <span th:text="*{#strings.substringAfter(getName(), 'https://www.')}"></span>
+            </span>
+            <span th:unless="*{#strings.startsWith(getName(), 'https://www.')}">
+                <span th:text="*{#strings.substringAfter(getName(), 'https://')}"></span>
+            </span>
+            <span>]</span>
+        </h1>
+
+
+        <table class="table table-bordered table-hover mt-3">
+          <tbody>
+          <tr>
+            <td>ID</td>
+            <td th:text="*{getId()}"></td>
+          </tr>
+          <tr>
+            <td>Имя</td>
+            <td th:text="*{getName()}"></td>
+          </tr>
+          <tr>
+            <td>Дата создания</td>
+            <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+          </tr>
+          </tbody>
+        </table>
+        <h2 class="mt-5">Проверки</h2>
+        <form
+                method="post"
+                action="/urls/1/checks"
+        >
+          <button type="submit" class="btn btn-primary">
+            Запустить проверку
+          </button>
+        </form>
+
+        <table class="table table-bordered table-hover mt-3">
+          <thead>
+          <th class="col-1">ID</th>
+          <th class="col-1">Код ответа</th>
+          <th>title</th>
+          <th>h1</th>
+          <th>description</th>
+          <th class="col-2">Дата проверки</th>
+          </thead>
+          <tbody>
+          <tr>
+            <td>14</td>
+            <td>200</td>
+            <td>Яндекс</td>
+            <td>Погода</td>
+            <td></td>
+            <td>2021-12-29 13:51</td>
+          </tr>
+          </tbody>
+          <tbody>
+          <tr>
+            <td>12</td>
+            <td>200</td>
+            <td>Яндекс</td>
+            <td>Сейчас в СМИ</td>
+            <td></td>
+            <td>2021-12-14 21:10</td>
+          </tr>
+          </tbody>
+          <tbody>
+          <tr>
+            <td>10</td>
+            <td>200</td>
+            <td>Яндекс</td>
+            <td>Сейчас в СМИ</td>
+            <td></td>
+            <td>2021-12-10 20:58</td>
+          </tr>
+          </tbody>
+          <tbody>
+          <tr>
+            <td>8</td>
+            <td>200</td>
+            <td>Яндекс</td>
+            <td>Сейчас в СМИ</td>
+            <td></td>
+            <td>2021-12-10 13:07</td>
+          </tr>
+          </tbody>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>200</td>
+            <td>Яндекс</td>
+            <td></td>
+            <td></td>
+            <td>2021-10-29 14:50</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+</section>
+
+</html>

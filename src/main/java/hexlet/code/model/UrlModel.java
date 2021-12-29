@@ -11,7 +11,6 @@ import javax.persistence.Lob;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "URLs")
@@ -35,8 +34,8 @@ public class UrlModel extends Model {
     public UrlModel() {
     }
 
-    public UrlModel(String name) {
-        this.name = name;
+    public UrlModel(String inputName) {
+        this.name = inputName;
     }
 
     /**
@@ -56,45 +55,71 @@ public class UrlModel extends Model {
         this.createdAt = LocalDateTime.now();
     }
 
+    /**
+     * @return id
+     */
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    /**
+     * @param inputId
+     */
+    public void setId(long inputId) {
+        this.id = inputId;
     }
 
+    /**
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * @param inputName
+     */
+    public void setName(String inputName) {
+        this.name = inputName;
     }
 
+    /**
+     * @return actual date
+     */
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    /**
+     * @param createdAtNow
+     */
+    public void setCreatedAt(LocalDateTime createdAtNow) {
+        this.createdAt = createdAtNow;
     }
 
+    /**
+     * @return http response code
+     */
     public int getResponseCode() {
         return responseCode;
     }
 
-    public void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
+    /**
+     * @param httpResponseCode
+     */
+    public void setResponseCode(int httpResponseCode) {
+        this.responseCode = httpResponseCode;
     }
-
+    /**
+     * @return full String
+     */
     @Override
     public String toString() {
-        return "UrlModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createdAt=" + createdAt +
-                ", responseCode=" + responseCode +
-                '}';
+        return "UrlModel{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", createdAt=" + createdAt
+                + ", responseCode=" + responseCode
+                + '}';
     }
 }

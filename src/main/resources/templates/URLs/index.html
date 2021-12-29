@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout.html}">
+
+</section>
+
+<section layout:fragment="header">
+
+  Сайты
+
+</section>
+
+<section layout:fragment="content">
+
+  <table class="table table-dark table-hover mt-3">
+    <thead>
+    <tr>
+      <th class="col-1">ID</th>
+      <th>Название</th>
+      <th class="col-3">Дата</th>
+      <th class="col-2">Код ответа</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="urlModel: ${urlModels}" th:object="${urlModel}"
+        style="cursor: pointer"
+        th:onclick="'javascript:rowClicked(\'' + *{getId()} + '\');'"
+    >
+      <td th:text="*{getId()}"></td>
+      <td th:text="*{#strings.abbreviate(getName(), 30)}"></td>
+      <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+      <td th:text="*{getResponseCode()}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <script>
+    function rowClicked(value) {
+      location.href = "/urls/" + value;
+    }
+  </script>
+
+
+  <nav aria-label="Page navigation" th:if="${#lists.size(pages)}">
+    <ul class="pagination justify-content-center mt-5 dark">
+      <li th:class="'page-item' + ${currentPage <= 1 ? ' disabled' : ''}">
+        <a class="bg-dark text-light page-link" th:href="@{/urls(page=${currentPage - 1})}">Previous</a>
+      </li>
+      <li th:each="page : ${pages}" th:class="'page-item' + ${currentPage == page ? ' active' : ''}">
+        <a class="bg-dark text-light page-link" th:href="@{/urls(page=${page})}" th:text="${page}"></a>
+      </li>
+      <li th:class="'page-item' + ${currentPage >= #lists.size(pages) ? ' disabled' : ''}">
+        <a class="bg-dark text-light page-link" th:href="@{/urls(page=${currentPage + 1})}">Next</a>
+      </li>
+    </ul>
+  </nav>
+
+</section>
+
+</html>
