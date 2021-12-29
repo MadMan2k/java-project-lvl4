@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="URLs" identityType="identity" pkName="pk_urls">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="name" type="clob"/>
+            <column name="created_at" type="localdatetime"/>
+            <column name="response_code" type="integer" notnull="true"/>
+        </createTable>
+    </changeSet>
+</migration>
