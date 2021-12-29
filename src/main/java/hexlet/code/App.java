@@ -1,5 +1,7 @@
 package hexlet.code;
 
+import hexlet.code.controllers.ArticleController;
+import hexlet.code.controllers.MainController;
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
@@ -7,29 +9,66 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 public class App {
 
-    private static String port = System.getenv().getOrDefault("PORT", "4000");
+//    private static String port = System.getenv().getOrDefault("PORT", "4000");
+
+    private static int getPort() {
+        String port = System.getenv().getOrDefault("PORT", "4000");
+        return Integer.parseInt(port);
+    }
+
+    private static String getMode() {
+        return System.getenv().getOrDefault("APP_ENV", "development");
+    }
+
+    private static boolean isProduction() {
+        return getMode().equals("production");
+    }
 
     public static void main(String[] args) {
-        getApp().start(Integer.parseInt(port));
+//        getApp().start(Integer.parseInt(port));
+        getApp().start(getPort());
     }
 
     private static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
-            config.enableDevLogging();
+            if (!isProduction()) {
+                config.enableDevLogging();
+            }
             config.enableWebjars();
             JavalinThymeleaf.configure(getTemplateEngine());
         });
-//        app.get("/", ctx -> ctx.result("Hello World"));
 
-        app.get("/", ctx -> ctx.render("index.html"));
+        addRoutes(app);
 
-//        app.before(ctx -> {
-//            ctx.attribute("ctx", ctx);
-//        });
+        app.before(ctx -> {ctx.attribute("ctx", ctx);
+        });
+
+//        app.get("/", ctx -> ctx.render("index.html"));
 
         return app;
+    }
+
+    public static void addRoutes(Javalin app) {
+        app.get("/", MainController.welcome);
+        app.get("/about", MainController.about);
+
+        app.routes(() -> {
+            path("urls", () -> {
+                get(ArticleController.listArticles);
+                post(ArticleController.createArticle);
+                // Handler not exist in my app
+//                get("new", ArticleController.newArticle);
+                path("{id}", () -> {
+                    get(ArticleController.showArticle);
+                });
+            });
+        });
     }
 
     private static TemplateEngine getTemplateEngine() {
