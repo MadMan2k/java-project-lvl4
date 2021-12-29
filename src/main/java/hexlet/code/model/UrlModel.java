@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "URLs")
+@Table(name = "urls")
 public class UrlModel extends Model {
 
     @Id
@@ -63,7 +63,7 @@ public class UrlModel extends Model {
     }
 
     /**
-     * @param inputId
+     * @param inputId input ID
      */
     public void setId(long inputId) {
         this.id = inputId;
@@ -77,7 +77,7 @@ public class UrlModel extends Model {
     }
 
     /**
-     * @param inputName
+     * @param inputName input URL
      */
     public void setName(String inputName) {
         this.name = inputName;
@@ -91,7 +91,7 @@ public class UrlModel extends Model {
     }
 
     /**
-     * @param createdAtNow
+     * @param createdAtNow creation time
      */
     public void setCreatedAt(LocalDateTime createdAtNow) {
         this.createdAt = createdAtNow;
@@ -105,7 +105,7 @@ public class UrlModel extends Model {
     }
 
     /**
-     * @param httpResponseCode
+     * @param httpResponseCode http response code
      */
     public void setResponseCode(int httpResponseCode) {
         this.responseCode = httpResponseCode;
