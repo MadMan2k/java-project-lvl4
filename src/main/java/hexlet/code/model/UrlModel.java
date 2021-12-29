@@ -1,15 +1,11 @@
 package hexlet.code.model;
 
 import io.ebean.Model;
-
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
