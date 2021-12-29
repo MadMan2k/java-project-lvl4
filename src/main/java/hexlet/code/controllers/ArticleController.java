@@ -40,10 +40,6 @@ public final class ArticleController {
 
         List<UrlModel> urlModels = pagedUrlModels.getList();
 
-        for (UrlModel urlModel : urlModels) {
-            System.out.println(urlModel);
-        }
-
         int lastPage = pagedUrlModels.getTotalPageCount() + 1;
         int currentPage = pagedUrlModels.getPageIndex() + 1;
         List<Integer> pages = IntStream

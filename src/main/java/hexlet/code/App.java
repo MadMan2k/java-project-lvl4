@@ -37,7 +37,7 @@ public class App {
 
     private static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
-            if (!isProduction()) {
+            if (isProduction()) {
                 config.enableDevLogging();
             }
             config.enableWebjars();
