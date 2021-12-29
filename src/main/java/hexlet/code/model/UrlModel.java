@@ -2,8 +2,10 @@ package hexlet.code.model;
 
 import io.ebean.Model;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,9 @@ public class UrlModel extends Model {
     @Column(name = "id")
     private long id;
 
-    @Lob
+//    @Lob
+    /* LAZY by default */
+//    @Basic(fetch = FetchType.EAGER)
     @Column(name = "name")
     private String name;
 

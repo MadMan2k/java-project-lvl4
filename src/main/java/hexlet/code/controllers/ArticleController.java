@@ -40,26 +40,6 @@ public final class ArticleController {
 
         List<UrlModel> urlModels = pagedUrlModels.getList();
 
-
-//        UrlModel urlModel1 = new QUrlModel().id.equalTo(1).findOne();
-//        UrlModel urlModel2 = new QUrlModel().id.equalTo(2).findOne();
-//        UrlModel urlModel3 = new QUrlModel().id.equalTo(3).findOne();
-
-//        System.out.println(urlModel1);
-//        System.out.println(urlModel2);
-//        System.out.println(urlModel3);
-
-//        URL url1 = new URL(new QUrlModel().id.equalTo(1).findOne().getName());
-//        URL url2 = new URL(new QUrlModel().id.equalTo(2).findOne().getName());
-//        URL url3 = new URL(new QUrlModel().id.equalTo(3).findOne().getName());
-//
-//        System.out.println("Ето url1 " + url1);
-//        System.out.println("Ето url2 " + url2);
-//        System.out.println("Ето url3 " + url3);
-
-
-
-
         for (UrlModel urlModel : urlModels) {
             System.out.println(urlModel);
         }
