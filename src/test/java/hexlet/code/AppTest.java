@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTest {
 
+    private final int RESPONSE_CODE_200 = 200;
+
     @Test
     void testInit() {
         assertThat(true).isEqualTo(true);
@@ -44,11 +46,17 @@ public class AppTest {
         app.stop();
     }
 
+    /**
+     * Open transaction before each test
+     */
     @BeforeEach
     void beforeEach() {
         transaction = DB.beginTransaction();
     }
 
+    /**
+     * Close transaction after each test
+     */
     @AfterEach
     void afterEach() {
         transaction.rollback();
@@ -60,7 +68,7 @@ public class AppTest {
         @Test
         void testIndex() {
             HttpResponse<String> response = Unirest.get(baseUrl).asString();
-            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
             assertThat(response.getBody()).contains("Free website SEO checker");
         }
 
