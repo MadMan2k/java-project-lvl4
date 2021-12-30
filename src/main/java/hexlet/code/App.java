@@ -35,7 +35,7 @@ public class App {
         getApp().start(getPort());
     }
 
-    private static Javalin getApp() {
+    public static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
             if (!isProduction()) {
                 config.enableDevLogging();

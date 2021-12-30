@@ -19,7 +19,7 @@
       <div class="container-lg mt-5">
 
         <h1 class="text-light bg-dark text-center">
-            <span>Сайт [</span>
+            <span>Website [</span>
             <span th:if="*{#strings.startsWith(getName(), 'https://www.')}">
                 <span th:text="*{#strings.substringAfter(getName(), 'https://www.')}"></span>
             </span>
@@ -29,7 +29,6 @@
             <span>]</span>
         </h1>
 
-
         <table class="table table-bordered table-hover mt-3">
           <tbody>
           <tr>
@@ -37,15 +36,16 @@
             <td th:text="*{getId()}"></td>
           </tr>
           <tr>
-            <td>Имя</td>
+            <td>Name</td>
             <td th:text="*{getName()}"></td>
           </tr>
           <tr>
-            <td>Дата создания</td>
+            <td>Added</td>
             <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
           </tr>
           </tbody>
         </table>
+
         <h2 class="mt-5">Проверки</h2>
         <form
                 method="post"
