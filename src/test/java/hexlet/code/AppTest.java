@@ -114,7 +114,7 @@ public class AppTest {
 //
         @Test
         void testCreate() {
-            String inputName = "https://www.youtube.com";
+            String inputName = "www.youtube.com";
             HttpResponse<String> responsePost = Unirest
                     .post(baseUrl + "/urls")
                     .field("url", inputName)
@@ -129,15 +129,15 @@ public class AppTest {
             String body = response.getBody();
 
             assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
-            assertThat(body).contains(inputName);
+            assertThat(body).contains("https://" + inputName);
             assertThat(body).contains("The site was successfully added");
 
             UrlModel actualUrlModel = new QUrlModel()
-                    .name.equalTo(inputName)
+                    .name.equalTo("https://" + inputName)
                     .findOne();
 
             assertThat(actualUrlModel).isNotNull();
-            assertThat(actualUrlModel.getName()).isEqualTo(inputName);
+            assertThat(actualUrlModel.getName()).isEqualTo("https://" + inputName);
         }
     }
 }
