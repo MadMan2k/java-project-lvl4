@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTest {
 
     private static final int RESPONSE_CODE_200 = 200;
+    private static final int RESPONSE_CODE_302 = 302;
 
     @Test
     void testInit() {
@@ -85,7 +86,7 @@ public class AppTest {
                     .asString();
             String body = response.getBody();
 
-            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
             assertThat(body).contains(existingUrlModel.getName());
         }
 
@@ -96,7 +97,7 @@ public class AppTest {
                     .asString();
             String body = response.getBody();
 
-            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
             assertThat(body).contains(existingUrlModel.getName());
             assertThat(body).contains(String.valueOf(existingUrlModel.getId()));
         }
@@ -119,7 +120,7 @@ public class AppTest {
                     .field("url", inputName)
                     .asEmpty();
 
-            assertThat(responsePost.getStatus()).isEqualTo(302);
+            assertThat(responsePost.getStatus()).isEqualTo(RESPONSE_CODE_302);
             assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls");
 
             HttpResponse<String> response = Unirest
@@ -127,7 +128,7 @@ public class AppTest {
                     .asString();
             String body = response.getBody();
 
-            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
             assertThat(body).contains(inputName);
             assertThat(body).contains("The site was successfully added");
 
