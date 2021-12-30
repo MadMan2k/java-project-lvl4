@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTest {
 
-    private final int RESPONSE_CODE_200 = 200;
+    private static final int RESPONSE_CODE_200 = 200;
 
     @Test
     void testInit() {
@@ -47,7 +47,7 @@ public class AppTest {
     }
 
     /**
-     * Open transaction before each test
+     * Open transaction before each test.
      */
     @BeforeEach
     void beforeEach() {
@@ -55,7 +55,7 @@ public class AppTest {
     }
 
     /**
-     * Close transaction after each test
+     * Close transaction after each test.
      */
     @AfterEach
     void afterEach() {
