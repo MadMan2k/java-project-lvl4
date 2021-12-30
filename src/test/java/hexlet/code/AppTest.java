@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.model.UrlModel;
+import hexlet.code.model.query.QUrlModel;
 import io.ebean.DB;
 import io.ebean.Transaction;
 import io.javalin.Javalin;
@@ -71,12 +72,71 @@ public class AppTest {
             assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
             assertThat(response.getBody()).contains("Free website SEO checker");
         }
+    }
 
+
+    @Nested
+    class URLsTest {
+
+        @Test
+        void testIndex() {
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+            String body = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(body).contains(existingUrlModel.getName());
+        }
+
+        @Test
+        void testShow() {
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls/" + existingUrlModel.getId())
+                    .asString();
+            String body = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(body).contains(existingUrlModel.getName());
+            assertThat(body).contains(String.valueOf(existingUrlModel.getId()));
+        }
+//
 //        @Test
-//        void testAbout() {
-//            HttpResponse<String> response = Unirest.get(baseUrl + "/about").asString();
+//        void testNew() {
+//            HttpResponse<String> response = Unirest
+//                    .get(baseUrl + "/articles/new")
+//                    .asString();
+//            String body = response.getBody();
+//
 //            assertThat(response.getStatus()).isEqualTo(200);
-//            assertThat(response.getBody()).contains("Эксперименты с Javalin на Хекслете");
 //        }
+//
+        @Test
+        void testCreate() {
+            String inputName = "https://www.youtube.com";
+            HttpResponse<String> responsePost = Unirest
+                    .post(baseUrl + "/urls")
+                    .field("url", inputName)
+                    .asEmpty();
+
+            assertThat(responsePost.getStatus()).isEqualTo(302);
+            assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls");
+
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+            String body = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(body).contains(inputName);
+            assertThat(body).contains("The site was successfully added");
+
+            UrlModel actualUrlModel = new QUrlModel()
+                    .name.equalTo(inputName)
+                    .findOne();
+
+            assertThat(actualUrlModel).isNotNull();
+            assertThat(actualUrlModel.getName()).isEqualTo(inputName);
+        }
     }
 }

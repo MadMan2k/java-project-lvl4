@@ -73,7 +73,7 @@ public final class ArticleController {
         inputURL = UrlStandardizer.standardize(inputURL);
 
         if (new QUrlModel().name.equalTo(inputURL).exists()) {
-            ctx.sessionAttribute("flash", "Сайт уже существует в базе");
+            ctx.sessionAttribute("flash", "The site already exists in the database");
             ctx.sessionAttribute("flash-type", "info");
             ctx.redirect("/urls");
             return;
@@ -88,7 +88,7 @@ public final class ArticleController {
             connection.connect();
             responseCode = connection.getResponseCode();
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.sessionAttribute("flash", "Invalid URL");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect("/");
             return;
@@ -98,7 +98,7 @@ public final class ArticleController {
         urlModel.setResponseCode(responseCode);
         urlModel.save();
 
-        ctx.sessionAttribute("flash", "Сайт успешно добавлен");
+        ctx.sessionAttribute("flash", "The site was successfully added");
         ctx.sessionAttribute("flash-type", "success");
 
         ctx.redirect("/urls");
