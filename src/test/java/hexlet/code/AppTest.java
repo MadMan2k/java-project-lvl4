@@ -7,6 +7,7 @@ import io.ebean.Transaction;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,6 +35,8 @@ public class AppTest {
 
     @BeforeAll
     public static void beforeAll() {
+        MockWebServer server = new MockWebServer();
+
         app = App.getApp();
         app.start(0);
         int port = app.port();

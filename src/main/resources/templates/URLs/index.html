@@ -29,7 +29,12 @@
       <td th:text="*{getId()}"></td>
       <td th:text="*{#strings.abbreviate(getName(), 30)}"></td>
       <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
-<!--      <td th:text="*{getResponseCode()}"></td>-->
+      <div th:if="*{not #lists.isEmpty(getUrlChecks())}">
+          <td th:text="*{#lists.sort(getUrlChecks()).get(0).getStatusCode()}"></td>
+      </div>
+      <div th:unless="*{not #lists.isEmpty(getUrlChecks())}">
+          <td th:text="'n/a'"></td>
+      </div>
     </tr>
     </tbody>
   </table>

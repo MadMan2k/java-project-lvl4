@@ -15,8 +15,6 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class App {
 
-//    private static String port = System.getenv().getOrDefault("PORT", "4000");
-
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "4000");
         return Integer.parseInt(port);
@@ -31,7 +29,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-//        getApp().start(Integer.parseInt(port));
         getApp().start(getPort());
     }
 
@@ -48,14 +45,11 @@ public class App {
 
         app.before(ctx -> ctx.attribute("ctx", ctx));
 
-//        app.get("/", ctx -> ctx.render("index.html"));
-
         return app;
     }
 
     public static void addRoutes(Javalin app) {
         app.get("/", MainController.getWelcome());
-//        app.get("/about", MainController.getAbout());
 
         app.routes(() -> {
             path("urls", () -> {

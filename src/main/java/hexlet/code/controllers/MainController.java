@@ -8,15 +8,7 @@ public class MainController {
         return welcome;
     }
 
-//    public static Handler getAbout() {
-//        return about;
-//    }
-
     private static Handler welcome = ctx -> {
         ctx.render("index.html");
     };
-
-//    private static Handler about = ctx -> {
-//        ctx.render("about.html");
-//    };
 }

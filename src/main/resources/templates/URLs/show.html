@@ -3,9 +3,7 @@
       layout:decorate="~{layouts/mainLayout.html}" lang="en">
 
 <section layout:fragment="content" th:object="${urlModel}">
-
     <div class="container-lg mt-5">
-
         <h1 class="text-light bg-dark text-center">
             <span>Website [</span>
             <span th:if="*{#strings.startsWith(getName(), 'https://www.')}">
@@ -33,8 +31,6 @@
                 </tr>
             </tbody>
         </table>
-
-
         <h2 class="mt-5">Verifications</h2>
         <form
                 method="post"
@@ -65,11 +61,6 @@
           </tr>
           </tbody>
       </table>
-
-
-
-
-
     </div>
 </section>
 </html>

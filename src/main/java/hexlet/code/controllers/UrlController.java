@@ -11,7 +11,6 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,7 +63,6 @@ public final class UrlController {
 
     private static Handler createURL = ctx -> {
         String inputURL = ctx.formParam("url");
-        int responseCode = 0;
 
         if (inputURL == null) {
             ctx.redirect("/");
@@ -73,21 +71,12 @@ public final class UrlController {
 
         inputURL = UrlStandardizer.standardize(inputURL);
 
-        if (new QUrlModel().name.equalTo(inputURL).exists()) {
-            ctx.sessionAttribute("flash", "The site already exists in the database");
-            ctx.sessionAttribute("flash-type", "info");
-            ctx.redirect("/urls");
-            return;
-        }
-
         try {
             URL url = new URL(inputURL);
-            inputURL = inputURL.substring(0, inputURL.length() - url.getPath().length());
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            responseCode = connection.getResponseCode();
+            inputURL = "https://" + url.getHost();
+            if (url.getPort() != -1) {
+                inputURL = inputURL + ":" + url.getPort();
+            }
         } catch (Exception e) {
             ctx.sessionAttribute("flash", "Invalid URL");
             ctx.sessionAttribute("flash-type", "danger");
@@ -95,8 +84,15 @@ public final class UrlController {
             return;
         }
 
+        if (new QUrlModel().name.equalTo(inputURL).exists()) {
+            ctx.sessionAttribute("flash", "The site already exists in the database");
+            ctx.sessionAttribute("flash-type", "info");
+            ctx.redirect("/urls");
+            return;
+        }
+
+
         UrlModel urlModel = new UrlModel(inputURL);
-//        urlModel.setResponseCode(responseCode);
         urlModel.save();
 
         ctx.sessionAttribute("flash", "The site was successfully added");
@@ -124,15 +120,11 @@ public final class UrlController {
         String title;
         String h1;
         String description;
-        int statusCode;
+        int statusCode = 404;
         Document doc;
         Connection.Response response;
 
         int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
-
-
-
-
 
         UrlModel urlModel = new QUrlModel()
                 .id.equalTo(id)
@@ -144,15 +136,6 @@ public final class UrlController {
 
         String urlAsString = urlModel.getName();
 
-
-
-//        UrlCheckModel urlCheckModel = new UrlCheckModel();
-//        Random random = new Random();
-//        urlCheckModel.setStatusCode(random.ints(100, 999).findFirst().getAsInt());
-//        urlCheckModel.setTitle("This is the title");
-//        urlCheckModel.setH1("This is H1");
-//        urlCheckModel.setDescription("This is description");
-
         try {
             response = Jsoup.connect(urlAsString)
                     .timeout(TIMEOUT_LIMIT)
@@ -160,8 +143,12 @@ public final class UrlController {
             doc = response.parse();
             statusCode = response.statusCode();
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Server connection timeout error. Looks like the site is down :(");
-            ctx.sessionAttribute("flash-type", "alert");
+            UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, "", "", "");
+            urlModel.addCheckToUrl(urlCheckModel);
+            urlModel.save();
+            ctx.attribute("urlModel", urlModel);
+            ctx.sessionAttribute("flash", "Server connection timeout error. It looks like this site has been working hard and is resting now :(");
+            ctx.sessionAttribute("flash-type", "danger");
             ctx.render("URLs/show.html");
             return;
         }
@@ -183,11 +170,6 @@ public final class UrlController {
         } catch (Exception e) {
             description = "";
         }
-
-//        System.out.println("response code : " + statusCode);
-//        System.out.println("title : " + title);
-//        System.out.println("h1 : " + h1);
-//        System.out.println("description : " + description);
 
         UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, title, h1, description);
 

@@ -50,23 +50,24 @@ public class UrlCheckModel extends Model implements Comparable<UrlCheckModel> {
     }
 
     public UrlCheckModel(int httpResponseCode, String titleContent, String h1Content, String descriptionContent) {
+        createdAt();
         this.statusCode = httpResponseCode;
         this.title = titleContent;
         this.h1 = h1Content;
         this.description = descriptionContent;
     }
 
-    /**
-     * Save with current date.
-     */
-    @Override
-    public void save() {
-        createdAt();
-        super.save();
-    }
+//    /**
+//     * Save with current date.
+//     */
+//    @Override
+//    public void save() {
+//        createdAt();
+//        super.save();
+//    }
 
     /**
-     * Current date for save().
+     * Current date for constructor.
      */
     @PrePersist
     void createdAt() {

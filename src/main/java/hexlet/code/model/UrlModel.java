@@ -24,17 +24,11 @@ public class UrlModel extends Model {
     @Column(name = "id")
     private long id;
 
-//    @Lob
-    /* LAZY by default */
-//    @Basic(fetch = FetchType.EAGER)
     @Column(name = "name")
     private String name;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-//    @Column(name = "response_code")
-//    private int responseCode;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "urlModel")
     private List<UrlCheckModel> urlChecks;
@@ -43,20 +37,21 @@ public class UrlModel extends Model {
     }
 
     public UrlModel(String inputName) {
+        createdAt();
         this.name = inputName;
     }
 
-    /**
-     * Save with current date.
-     */
-    @Override
-    public void save() {
-        createdAt();
-        super.save();
-    }
+//    /**
+//     * Save with current date.
+//     */
+//    @Override
+//    public void save() {
+//        createdAt();
+//        super.save();
+//    }
 
     /**
-     * Current date for save().
+     * Current date for constructor.
      */
     @PrePersist
     void createdAt() {
@@ -105,20 +100,6 @@ public class UrlModel extends Model {
         this.createdAt = createdAtNow;
     }
 
-//    /**
-//     * @return http response code
-//     */
-//    public int getResponseCode() {
-//        return responseCode;
-//    }
-
-//    /**
-//     * @param httpResponseCode http response code
-//     */
-//    public void setResponseCode(int httpResponseCode) {
-//        this.responseCode = httpResponseCode;
-//    }
-
     /**
      * @return list of checks
      */
@@ -144,7 +125,6 @@ public class UrlModel extends Model {
 
         urlChecks.add(urlCheckModel);
         urlCheckModel.setUrlModel(this);
-        urlCheckModel.createdAt();
     }
 
     /**
@@ -156,7 +136,6 @@ public class UrlModel extends Model {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", createdAt=" + createdAt
-//                + ", responseCode=" + responseCode
                 + '}';
     }
 }
