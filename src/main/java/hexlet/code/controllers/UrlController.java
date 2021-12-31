@@ -13,14 +13,13 @@ import org.jsoup.nodes.Document;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class UrlController {
     private static final int ROWS_PER_PAGE = 10;
+    private static final int TIMEOUT_LIMIT = 10000;
 
     public static Handler getListOfURLs() {
         return listOfURLs;
@@ -156,7 +155,7 @@ public final class UrlController {
 
         try {
             response = Jsoup.connect(urlAsString)
-                    .timeout(10000)
+                    .timeout(TIMEOUT_LIMIT)
                     .execute();
             doc = response.parse();
             statusCode = response.statusCode();

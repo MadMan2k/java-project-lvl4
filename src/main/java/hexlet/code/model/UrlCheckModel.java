@@ -49,11 +49,11 @@ public class UrlCheckModel extends Model implements Comparable<UrlCheckModel> {
     public UrlCheckModel() {
     }
 
-    public UrlCheckModel(int statusCode, String title, String h1, String description) {
-        this.statusCode = statusCode;
-        this.title = title;
-        this.h1 = h1;
-        this.description = description;
+    public UrlCheckModel(int httpResponseCode, String titleContent, String h1Content, String descriptionContent) {
+        this.statusCode = httpResponseCode;
+        this.title = titleContent;
+        this.h1 = h1Content;
+        this.description = descriptionContent;
     }
 
     /**
@@ -66,81 +66,131 @@ public class UrlCheckModel extends Model implements Comparable<UrlCheckModel> {
     }
 
     /**
-     * Current date for save()
+     * Current date for save().
      */
     @PrePersist
     void createdAt() {
         this.createdAt = LocalDateTime.now();
     }
 
+    /**
+     * @return id
+     */
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    /**
+     * @param newId
+     */
+    public void setId(long newId) {
+        this.id = newId;
     }
 
+    /**
+     * @return http response status code
+     */
     public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
+    /**
+     * @param httpResponseCode
+     */
+    public void setStatusCode(int httpResponseCode) {
+        this.statusCode = httpResponseCode;
     }
 
+    /**
+     * @return content in html tag 'title'
+     */
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    /**
+     * @param titleContent
+     */
+    public void setTitle(String titleContent) {
+        this.title = titleContent;
     }
 
+    /**
+     * @return content in first html tag 'h1'
+     */
     public String getH1() {
         return h1;
     }
 
-    public void setH1(String h1) {
-        this.h1 = h1;
+    /**
+     * @param h1Content
+     */
+    public void setH1(String h1Content) {
+        this.h1 = h1Content;
     }
 
+    /**
+     * @return content in html tag 'meta name="description" content='...''
+     */
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    /**
+     * @param descriptionContent
+     */
+    public void setDescription(String descriptionContent) {
+        this.description = descriptionContent;
     }
 
+    /**
+     * @return return creation date
+     */
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    /**
+     * @param creationDate
+     */
+    public void setCreatedAt(LocalDateTime creationDate) {
+        this.createdAt = creationDate;
     }
 
+    /**
+     * @return urlModel
+     */
     public UrlModel getUrlModel() {
         return urlModel;
     }
 
-    public void setUrlModel(UrlModel urlModel) {
-        this.urlModel = urlModel;
+    /**
+     * @param urlModelOfCheck
+     */
+    public void setUrlModel(UrlModel urlModelOfCheck) {
+        this.urlModel = urlModelOfCheck;
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
-        return "UrlCheckModel{" +
-                "id=" + id +
-                ", statusCode=" + statusCode +
-                ", title='" + title + '\'' +
-                ", h1='" + h1 + '\'' +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
+        return "UrlCheckModel{"
+                + "id=" + id
+                + ", statusCode=" + statusCode
+                + ", title='" + title + '\''
+                + ", h1='" + h1 + '\''
+                + ", description='" + description + '\''
+                + ", createdAt=" + createdAt
+                + '}';
     }
 
+    /**
+     * Logic of two urlCheck comparison.
+     * @param another urlCheckModel to compare
+     * @return result of comparison
+     */
     @Override
     public int compareTo(@NotNull UrlCheckModel another) {
         if (this.id == another.id) {

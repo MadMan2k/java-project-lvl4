@@ -127,12 +127,16 @@ public class UrlModel extends Model {
     }
 
     /**
-     * @param urlChecks finished checks
+     * @param urlChecksOfUrlModel finished checks
      */
-    public void setUrlChecks(List<UrlCheckModel> urlChecks) {
-        this.urlChecks = urlChecks;
+    public void setUrlChecks(List<UrlCheckModel> urlChecksOfUrlModel) {
+        this.urlChecks = urlChecksOfUrlModel;
     }
 
+    /**
+     * Add urlCheckModel to urlModel and vice-versa.
+     * @param urlCheckModel
+     */
     public void addCheckToUrl(UrlCheckModel urlCheckModel) {
         if (urlChecks == null) {
             urlChecks = new ArrayList<>();
