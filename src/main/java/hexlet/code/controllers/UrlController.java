@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 public final class UrlController {
     private static final int ROWS_PER_PAGE = 10;
     private static final int TIMEOUT_LIMIT = 10000;
+    private static final int NOT_FOUND_CODE = 404;
 
     public static Handler getListOfURLs() {
         return listOfURLs;
@@ -120,7 +121,7 @@ public final class UrlController {
         String title;
         String h1;
         String description;
-        int statusCode = 404;
+        int statusCode = NOT_FOUND_CODE;
         Document doc;
         Connection.Response response;
 
@@ -147,7 +148,8 @@ public final class UrlController {
             urlModel.addCheckToUrl(urlCheckModel);
             urlModel.save();
             ctx.attribute("urlModel", urlModel);
-            ctx.sessionAttribute("flash", "Server connection timeout error. It looks like this site has been working hard and is resting now :(");
+            ctx.sessionAttribute("flash", "Server connection timeout error. "
+                    + "It looks like this site has been working hard and is resting now :(");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.render("URLs/show.html");
             return;
