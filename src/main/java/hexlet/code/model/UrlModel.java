@@ -1,14 +1,19 @@
 package hexlet.code.model;
 
 import io.ebean.Model;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "urls")
@@ -28,8 +33,11 @@ public class UrlModel extends Model {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "response_code")
-    private int responseCode;
+//    @Column(name = "response_code")
+//    private int responseCode;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "urlModel")
+    private List<UrlCheckModel> urlChecks;
 
     public UrlModel() {
     }
@@ -97,19 +105,44 @@ public class UrlModel extends Model {
         this.createdAt = createdAtNow;
     }
 
+//    /**
+//     * @return http response code
+//     */
+//    public int getResponseCode() {
+//        return responseCode;
+//    }
+
+//    /**
+//     * @param httpResponseCode http response code
+//     */
+//    public void setResponseCode(int httpResponseCode) {
+//        this.responseCode = httpResponseCode;
+//    }
+
     /**
-     * @return http response code
+     * @return list of checks
      */
-    public int getResponseCode() {
-        return responseCode;
+    public List<UrlCheckModel> getUrlChecks() {
+        return urlChecks;
     }
 
     /**
-     * @param httpResponseCode http response code
+     * @param urlChecks finished checks
      */
-    public void setResponseCode(int httpResponseCode) {
-        this.responseCode = httpResponseCode;
+    public void setUrlChecks(List<UrlCheckModel> urlChecks) {
+        this.urlChecks = urlChecks;
     }
+
+    public void addCheckToUrl(UrlCheckModel urlCheckModel) {
+        if (urlChecks == null) {
+            urlChecks = new ArrayList<>();
+        }
+
+        urlChecks.add(urlCheckModel);
+        urlCheckModel.setUrlModel(this);
+        urlCheckModel.createdAt();
+    }
+
     /**
      * @return full String
      */
@@ -119,7 +152,7 @@ public class UrlModel extends Model {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", createdAt=" + createdAt
-                + ", responseCode=" + responseCode
+//                + ", responseCode=" + responseCode
                 + '}';
     }
 }

@@ -1,22 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/mainLayout.html}">
-
-<section layout:fragment="header">
-  Просмотр статьи
-</section>
+      layout:decorate="~{layouts/mainLayout.html}" lang="en">
 
 <section layout:fragment="content" th:object="${urlModel}">
 
-  <div class="card">
-    <div class="card-header bg-secondary text-white">
-      <h2 th:text="*{getName()}"></h2>
-    </div>
-    <div class="card-body bg-light">
-      <p class="lead" th:text="*{getResponseCode()}"></p>
-    </div>
-
-      <div class="container-lg mt-5">
+    <div class="container-lg mt-5">
 
         <h1 class="text-light bg-dark text-center">
             <span>Website [</span>
@@ -30,94 +18,58 @@
         </h1>
 
         <table class="table table-bordered table-hover mt-3">
-          <tbody>
-          <tr>
-            <td>ID</td>
-            <td th:text="*{getId()}"></td>
-          </tr>
-          <tr>
-            <td>Name</td>
-            <td th:text="*{getName()}"></td>
-          </tr>
-          <tr>
-            <td>Added</td>
-            <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
-          </tr>
-          </tbody>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td th:text="*{getId()}"></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td th:text="*{getName()}"></td>
+                </tr>
+                <tr>
+                    <td>Added</td>
+                    <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+                </tr>
+            </tbody>
         </table>
 
-        <h2 class="mt-5">Проверки</h2>
+
+        <h2 class="mt-5">Verifications</h2>
         <form
                 method="post"
-                action="/urls/1/checks"
+                th:action="@{/urls/} + ${urlModel.getId()} + @{/check}"
         >
-          <button type="submit" class="btn btn-primary">
-            Запустить проверку
-          </button>
+            <button type="submit" class="btn btn-primary bg-dark" style="border-color:rgba(255,255,255,0.75)">
+              Verify
+            </button>
         </form>
 
-        <table class="table table-bordered table-hover mt-3">
+      <table class="table table-bordered table-hover mt-3">
           <thead>
-          <th class="col-1">ID</th>
-          <th class="col-1">Код ответа</th>
-          <th>title</th>
-          <th>h1</th>
-          <th>description</th>
-          <th class="col-2">Дата проверки</th>
+              <th class="col-1">ID</th>
+              <th class="col-1">Response</th>
+              <th>title</th>
+              <th>h1</th>
+              <th>description</th>
+              <th class="col-2">Verification date</th>
           </thead>
           <tbody>
-          <tr>
-            <td>14</td>
-            <td>200</td>
-            <td>Яндекс</td>
-            <td>Погода</td>
-            <td></td>
-            <td>2021-12-29 13:51</td>
+          <tr th:each="urlCheckModel: ${#lists.sort(urlModel.getUrlChecks())}">
+              <td th:text="${urlCheckModel.getId()}"></td>
+              <td th:text="${urlCheckModel.getStatusCode()}"></td>
+              <td th:text="${#strings.abbreviate(urlCheckModel.getTitle(), 50)}"></td>
+              <td th:text="${#strings.abbreviate(urlCheckModel.getH1(), 50)}"></td>
+              <td th:text="${#strings.abbreviate(urlCheckModel.getDescription(), 50)}"></td>
+              <td th:text="${#temporals.format(urlCheckModel.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
           </tr>
           </tbody>
-          <tbody>
-          <tr>
-            <td>12</td>
-            <td>200</td>
-            <td>Яндекс</td>
-            <td>Сейчас в СМИ</td>
-            <td></td>
-            <td>2021-12-14 21:10</td>
-          </tr>
-          </tbody>
-          <tbody>
-          <tr>
-            <td>10</td>
-            <td>200</td>
-            <td>Яндекс</td>
-            <td>Сейчас в СМИ</td>
-            <td></td>
-            <td>2021-12-10 20:58</td>
-          </tr>
-          </tbody>
-          <tbody>
-          <tr>
-            <td>8</td>
-            <td>200</td>
-            <td>Яндекс</td>
-            <td>Сейчас в СМИ</td>
-            <td></td>
-            <td>2021-12-10 13:07</td>
-          </tr>
-          </tbody>
-          <tbody>
-          <tr>
-            <td>1</td>
-            <td>200</td>
-            <td>Яндекс</td>
-            <td></td>
-            <td></td>
-            <td>2021-10-29 14:50</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      </table>
 
+
+
+
+
+    </div>
 </section>
-
 </html>

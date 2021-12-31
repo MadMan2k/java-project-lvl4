@@ -1,6 +1,6 @@
 package hexlet.code;
 
-import hexlet.code.controllers.ArticleController;
+import hexlet.code.controllers.UrlController;
 import hexlet.code.controllers.MainController;
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
@@ -59,12 +59,13 @@ public class App {
 
         app.routes(() -> {
             path("urls", () -> {
-                get(ArticleController.getListArticles());
-                post(ArticleController.getCreateArticle());
-                // Handler not exist in my app
-//                get("new", ArticleController.newArticle);
+                get(UrlController.getListOfURLs());
+                post(UrlController.getCreateURL());
                 path("{id}", () -> {
-                    get(ArticleController.getShowArticle());
+                    get(UrlController.getShowURL());
+                    path("check", () -> {
+                        post(UrlController.getCheckURL());
+                    });
                 });
             });
         });

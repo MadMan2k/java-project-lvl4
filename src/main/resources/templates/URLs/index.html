@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/mainLayout.html}">
+      layout:decorate="~{layouts/mainLayout.html}" lang="en">
 
 </section>
 
@@ -29,7 +29,7 @@
       <td th:text="*{getId()}"></td>
       <td th:text="*{#strings.abbreviate(getName(), 30)}"></td>
       <td th:text="*{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
-      <td th:text="*{getResponseCode()}"></td>
+<!--      <td th:text="*{getResponseCode()}"></td>-->
     </tr>
     </tbody>
   </table>
@@ -47,7 +47,7 @@
         <a class="bg-dark text-light page-link" th:href="@{/urls(page=${currentPage - 1})}">Previous</a>
       </li>
       <li th:each="page : ${pages}" th:class="'page-item' + ${currentPage == page ? ' active' : ''}">
-        <a class="bg-dark text-light page-link" th:href="@{/urls(page=${page})}" th:text="${page}"></a>
+        <a class="bg-dark text-light page-link " style="border-color:rgba(255,255,255,0.75)" th:href="@{/urls(page=${page})}" th:text="${page}"></a>
       </li>
       <li th:class="'page-item' + ${currentPage >= #lists.size(pages) ? ' disabled' : ''}">
         <a class="bg-dark text-light page-link" th:href="@{/urls(page=${currentPage + 1})}">Next</a>
