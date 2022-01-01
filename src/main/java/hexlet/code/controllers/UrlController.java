@@ -3,7 +3,6 @@ package hexlet.code.controllers;
 import hexlet.code.model.UrlCheckModel;
 import hexlet.code.model.UrlModel;
 import hexlet.code.model.query.QUrlModel;
-import hexlet.code.service.UrlStandardizer;
 import io.ebean.PagedList;
 import io.javalin.http.Handler;
 import io.javalin.http.NotFoundResponse;
