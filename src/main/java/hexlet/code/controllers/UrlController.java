@@ -100,9 +100,9 @@ public final class UrlController {
         UrlModel urlModel = new UrlModel(inputURL);
         urlModel.save();
 
-        String flashSuccess = " / Страница успешно добавлена";
+        String flashRus = " / Страница успешно добавлена";
 
-        ctx.sessionAttribute("flash", "The site was successfully added" + flashSuccess);
+        ctx.sessionAttribute("flash", "The site was successfully added" + flashRus);
         ctx.sessionAttribute("flash-type", "success");
 
         ctx.redirect("/urls");
@@ -194,7 +194,10 @@ public final class UrlController {
         urlModel.save();
 
         ctx.attribute("urlModel", urlModel);
-        ctx.sessionAttribute("flash", "The site was successfully checked");
+
+        String flashRus = " / Страница успешно проверена";
+
+        ctx.sessionAttribute("flash", "The site was successfully checked" + flashRus);
         ctx.sessionAttribute("flash-type", "info");
 //        ctx.render("URLs/show.html");
         ctx.redirect("/urls/" + urlModel.getId());
