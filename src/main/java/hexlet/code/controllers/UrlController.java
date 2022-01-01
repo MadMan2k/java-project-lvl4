@@ -127,7 +127,7 @@ public final class UrlController {
         String title;
         String h1;
         String description;
-        int statusCode = -1;
+        int statusCode;
         Document doc;
         Connection.Response response;
 
@@ -156,8 +156,6 @@ public final class UrlController {
                 statusCode = NOT_FOUND_CODE;
             }
 
-//            e.printStackTrace();
-
             UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, "", "", "");
             urlModel.addCheckToUrl(urlCheckModel);
             urlModel.save();
@@ -165,7 +163,6 @@ public final class UrlController {
             ctx.sessionAttribute("flash", "Server connection timeout error. "
                     + "It looks like this site has been working hard and is resting now :(");
             ctx.sessionAttribute("flash-type", "danger");
-//            ctx.render("URLs/show.html");
             ctx.redirect("/urls/" + urlModel.getId());
             return;
         }
@@ -195,11 +192,14 @@ public final class UrlController {
 
         ctx.attribute("urlModel", urlModel);
 
+        String consumeSessionAttribute = ctx.consumeSessionAttribute("flash");
+        System.out.println(consumeSessionAttribute);
+
+
         String flashRus = " / Страница успешно проверена";
 
         ctx.sessionAttribute("flash", "The site was successfully checked" + flashRus);
         ctx.sessionAttribute("flash-type", "info");
-//        ctx.render("URLs/show.html");
         ctx.redirect("/urls/" + urlModel.getId());
     };
 }
