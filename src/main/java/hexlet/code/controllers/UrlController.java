@@ -8,6 +8,7 @@ import io.ebean.PagedList;
 import io.javalin.http.Handler;
 import io.javalin.http.NotFoundResponse;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -121,7 +122,7 @@ public final class UrlController {
         String title;
         String h1;
         String description;
-        int statusCode = NOT_FOUND_CODE;
+        int statusCode = -1;
         Document doc;
         Connection.Response response;
 
@@ -144,6 +145,14 @@ public final class UrlController {
             doc = response.parse();
             statusCode = response.statusCode();
         } catch (Exception e) {
+            if (e instanceof HttpStatusException) {
+                statusCode = ((HttpStatusException) e).getStatusCode();
+            } else {
+                statusCode = NOT_FOUND_CODE;
+            }
+
+//            e.printStackTrace();
+
             UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, "", "", "");
             urlModel.addCheckToUrl(urlCheckModel);
             urlModel.save();
@@ -151,7 +160,8 @@ public final class UrlController {
             ctx.sessionAttribute("flash", "Server connection timeout error. "
                     + "It looks like this site has been working hard and is resting now :(");
             ctx.sessionAttribute("flash-type", "danger");
-            ctx.render("URLs/show.html");
+//            ctx.render("URLs/show.html");
+            ctx.redirect("/urls/" + urlModel.getId());
             return;
         }
 
@@ -181,6 +191,7 @@ public final class UrlController {
         ctx.attribute("urlModel", urlModel);
         ctx.sessionAttribute("flash", "The site was successfully checked");
         ctx.sessionAttribute("flash-type", "info");
-        ctx.render("URLs/show.html");
+//        ctx.render("URLs/show.html");
+        ctx.redirect("/urls/" + urlModel.getId());
     };
 }
