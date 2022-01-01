@@ -169,7 +169,7 @@ public class AppTest {
 
         @Test
         void testCreate() {
-            String inputName = "ru.hexlet.io";
+            String inputName = "https://ru.hexlet.io";
             HttpResponse<String> responsePost = Unirest
                     .post(baseUrl + "/urls")
                     .field("url", inputName)
@@ -184,15 +184,15 @@ public class AppTest {
             String body = response.getBody();
 
             assertThat(response.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_200"));
-            assertThat(body).contains("https://" + inputName);
+            assertThat(body).contains(inputName);
             assertThat(body).contains("The site was successfully added");
 
             UrlModel actualUrlModel = new QUrlModel()
-                    .name.equalTo("https://" + inputName)
+                    .name.equalTo(inputName)
                     .findOne();
 
             assertThat(actualUrlModel).isNotNull();
-            assertThat(actualUrlModel.getName()).isEqualTo("https://" + inputName);
+            assertThat(actualUrlModel.getName()).isEqualTo(inputName);
         }
 
         @Test

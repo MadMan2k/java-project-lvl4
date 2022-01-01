@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -71,7 +72,9 @@ public final class UrlController {
             return;
         }
 
-        inputURL = UrlStandardizer.standardize(inputURL);
+        inputURL = inputURL.toLowerCase(Locale.ROOT);
+
+//        inputURL = UrlStandardizer.standardize(inputURL);
 
         try {
             URL url = new URL(inputURL);
