@@ -77,7 +77,8 @@ public final class UrlController {
 
         try {
             URL url = new URL(inputURL);
-            inputURL = "https://" + url.getHost();
+//            inputURL = "https://" + url.getHost();
+            inputURL = url.getProtocol() + "://" + url.getHost();
             if (url.getPort() != -1) {
                 inputURL = inputURL + ":" + url.getPort();
             }
