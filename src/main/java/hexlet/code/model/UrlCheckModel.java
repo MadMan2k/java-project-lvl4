@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "url_checks")
+@Table(name = "url_check")
 public class UrlCheckModel extends Model implements Comparable<UrlCheckModel> {
 
     @Id
