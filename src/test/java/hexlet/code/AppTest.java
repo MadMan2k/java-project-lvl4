@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.model.UrlCheckModel;
 import hexlet.code.model.UrlModel;
 import hexlet.code.model.query.QUrlModel;
 import io.ebean.DB;
@@ -13,12 +12,7 @@ import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import okio.Buffer;
 import org.jetbrains.annotations.NotNull;
-import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,8 +29,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTest {
 
+    private static final int MOCK_PORT = 7000;
     private static final int RESPONSE_CODE_200 = 200;
     private static final int RESPONSE_CODE_302 = 302;
+    private static final int RESPONSE_CODE_404 = 404;
 
     @Test
     void testInit() {
@@ -62,7 +58,7 @@ public class AppTest {
 
         mockWebServer = new MockWebServer();
         mockWebServer.enqueue(new MockResponse().setBody("hello from MockServer"));
-        mockWebServer.start(7000);
+        mockWebServer.start(MOCK_PORT);
         mockUrl = mockWebServer.url("/");
         mockUrlModel = new UrlModel(mockUrl.toString());
         mockUrlModel.save();
@@ -165,7 +161,7 @@ public class AppTest {
                 @NotNull
                 @Override
                 public MockResponse dispatch(@NotNull RecordedRequest recordedRequest) throws InterruptedException {
-                    return new MockResponse().setResponseCode(404);
+                    return new MockResponse().setResponseCode(RESPONSE_CODE_404);
                 }
             };
             mockWebServer.setDispatcher(dispatcher);
@@ -184,7 +180,8 @@ public class AppTest {
                     .asString();
 
             String body = response.getBody();
-            assertThat(body).contains("Server connection timeout error. It looks like this site has been working hard and is resting now :(");
+            assertThat(body).contains("Server connection timeout error. "
+                    + "It looks like this site has been working hard and is resting now :(");
         }
 
         @Test
@@ -206,7 +203,7 @@ public class AppTest {
                 @NotNull
                 @Override
                 public MockResponse dispatch(@NotNull RecordedRequest recordedRequest) throws InterruptedException {
-                    return new MockResponse().setResponseCode(200).setBody(contentTestPage);
+                    return new MockResponse().setResponseCode(RESPONSE_CODE_200).setBody(contentTestPage);
                 }
             };
             mockWebServer.setDispatcher(dispatcher);
