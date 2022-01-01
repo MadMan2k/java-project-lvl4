@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "urls")
+@Table(name = "url")
 public class UrlModel extends Model {
 
     @Id
