@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.model.UrlCheckModel;
 import hexlet.code.model.UrlModel;
 import hexlet.code.model.query.QUrlModel;
 import io.ebean.DB;
@@ -23,6 +24,8 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -127,6 +130,39 @@ public class AppTest {
         }
 
         @Test
+        void testUrlModelAndUrlCheckModelMethods() {
+            LocalDateTime localDateTime = LocalDateTime.of(2022, 1, 1, 1, 0);
+
+            UrlModel urlModel = new UrlModel();
+            urlModel.setId(50);
+            urlModel.setCreatedAt(localDateTime);
+            urlModel.setName("https://www.example1.com");
+
+            UrlCheckModel urlCheckModel = new UrlCheckModel();
+            urlCheckModel.setId(50);
+            urlCheckModel.setUrlModel(urlModel);
+            urlCheckModel.setStatusCode(200);
+            urlCheckModel.setTitle("newTitle");
+            urlCheckModel.setH1("newH1");
+            urlCheckModel.setDescription("newDescription");
+            urlCheckModel.setCreatedAt(localDateTime);
+
+            urlModel.setUrlChecks(Arrays.asList(urlCheckModel));
+
+            urlModel.save();
+
+            UrlModel newUrlModel = new QUrlModel().id.equalTo(50).findOne();
+
+            assertThat(newUrlModel.getId()).isEqualTo(50);
+            assertThat(newUrlModel.getName()).isEqualTo("https://www.example1.com");
+            assertThat(newUrlModel.getCreatedAt()).isEqualTo(localDateTime);
+            assertThat(newUrlModel.getUrlChecks().get(0).toString())
+                    .isEqualTo("UrlCheckModel{id=50, statusCode=200, title='newTitle', h1='newH1', description='null', createdAt=2022-01-01T01:00}");
+
+
+        }
+
+        @Test
         void testCreate() {
             String inputName = "ru.hexlet.io";
             HttpResponse<String> responsePost = Unirest
@@ -221,7 +257,6 @@ public class AppTest {
                     .asString();
 
             String body = response.getBody();
-            System.out.println(body);
             assertThat(body).contains("The site was successfully checked");
             assertThat(body).contains("GitHub: Where the world builds software · GitHub");
             assertThat(body).contains("Where the world builds software");
