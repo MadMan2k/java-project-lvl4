@@ -44,6 +44,8 @@ dependencies {
   implementation 'io.ebean:ebean-migration:12.11.2'
   annotationProcessor 'io.ebean:querybean-generator:12.12.1'
   implementation 'org.jsoup:jsoup:1.14.3'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
 
 
   // NOTE: ebean-ddl-generator требует старые зависимости, которых нет в java 9 и выше

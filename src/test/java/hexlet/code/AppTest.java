@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.model.UrlCheckModel;
 import hexlet.code.model.UrlModel;
 import hexlet.code.model.query.QUrlModel;
@@ -24,23 +25,15 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AppTest {
-
-    private static final int MOCK_PORT = 7000;
-    private static final int RESPONSE_CODE_200 = 200;
-    private static final int RESPONSE_CODE_302 = 302;
-    private static final int RESPONSE_CODE_404 = 404;
-
-    @Test
-    void testInit() {
-        assertThat(true).isEqualTo(true);
-    }
 
     private static Javalin app;
     private static String baseUrl;
@@ -49,9 +42,20 @@ public class AppTest {
     private static UrlModel mockUrlModel;
     private static Transaction transaction;
     private static MockWebServer mockWebServer;
+    private static Map<String, Integer> inputTestValues;
+
+    @Test
+    void testInit() {
+        assertThat(true).isEqualTo(true);
+    }
+
+
 
     @BeforeAll
     public static void beforeAll() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        inputTestValues = mapper.readValue(Paths.get("src/test/resources/inputTestValues.json").toFile(), Map.class);
+
         app = App.getApp();
         app.start(0);
         int port = app.port();
@@ -61,7 +65,7 @@ public class AppTest {
 
         mockWebServer = new MockWebServer();
         mockWebServer.enqueue(new MockResponse().setBody("hello from MockServer"));
-        mockWebServer.start(MOCK_PORT);
+        mockWebServer.start(inputTestValues.get("MOCK_PORT"));
         mockUrl = mockWebServer.url("/");
         mockUrlModel = new UrlModel(mockUrl.toString());
         mockUrlModel.save();
@@ -97,7 +101,7 @@ public class AppTest {
         @Test
         void testIndex() {
             HttpResponse<String> response = Unirest.get(baseUrl).asString();
-            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
+            assertThat(response.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_200"));
             assertThat(response.getBody()).contains("Free website SEO checker");
         }
     }
@@ -113,7 +117,7 @@ public class AppTest {
                     .asString();
             String body = response.getBody();
 
-            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
+            assertThat(response.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_200"));
             assertThat(body).contains(existingUrlModel.getName());
         }
 
@@ -124,24 +128,24 @@ public class AppTest {
                     .asString();
             String body = response.getBody();
 
-            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
+            assertThat(response.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_200"));
             assertThat(body).contains(existingUrlModel.getName());
             assertThat(body).contains(String.valueOf(existingUrlModel.getId()));
         }
 
         @Test
         void testUrlModelAndUrlCheckModelMethods() {
-            LocalDateTime localDateTime = LocalDateTime.of(2022, 1, 1, 1, 0);
+            LocalDateTime localDateTime = LocalDateTime.of(inputTestValues.get("CUSTOM_YEAR"), 1, 1, 1, 0);
 
             UrlModel urlModel = new UrlModel();
-            urlModel.setId(50);
+            urlModel.setId(inputTestValues.get("CUSTOM_ID"));
             urlModel.setCreatedAt(localDateTime);
             urlModel.setName("https://www.example1.com");
 
             UrlCheckModel urlCheckModel = new UrlCheckModel();
-            urlCheckModel.setId(50);
+            urlCheckModel.setId(inputTestValues.get("CUSTOM_ID"));
             urlCheckModel.setUrlModel(urlModel);
-            urlCheckModel.setStatusCode(200);
+            urlCheckModel.setStatusCode(inputTestValues.get("RESPONSE_CODE_200"));
             urlCheckModel.setTitle("newTitle");
             urlCheckModel.setH1("newH1");
             urlCheckModel.setDescription("newDescription");
@@ -151,9 +155,9 @@ public class AppTest {
 
             urlModel.save();
 
-            UrlModel newUrlModel = new QUrlModel().id.equalTo(50).findOne();
+            UrlModel newUrlModel = new QUrlModel().id.equalTo(inputTestValues.get("CUSTOM_ID")).findOne();
 
-            assertThat(newUrlModel.getId()).isEqualTo(50);
+            assertThat(newUrlModel.getId()).isEqualTo(Long.valueOf(inputTestValues.get("CUSTOM_ID")));
             assertThat(newUrlModel.getName()).isEqualTo("https://www.example1.com");
             assertThat(newUrlModel.getCreatedAt()).isEqualTo(localDateTime);
             assertThat(newUrlModel.getUrlChecks().get(0).toString())
@@ -170,7 +174,7 @@ public class AppTest {
                     .field("url", inputName)
                     .asEmpty();
 
-            assertThat(responsePost.getStatus()).isEqualTo(RESPONSE_CODE_302);
+            assertThat(responsePost.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_302"));
             assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls");
 
             HttpResponse<String> response = Unirest
@@ -178,7 +182,7 @@ public class AppTest {
                     .asString();
             String body = response.getBody();
 
-            assertThat(response.getStatus()).isEqualTo(RESPONSE_CODE_200);
+            assertThat(response.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_200"));
             assertThat(body).contains("https://" + inputName);
             assertThat(body).contains("The site was successfully added");
 
@@ -197,7 +201,7 @@ public class AppTest {
                 @NotNull
                 @Override
                 public MockResponse dispatch(@NotNull RecordedRequest recordedRequest) throws InterruptedException {
-                    return new MockResponse().setResponseCode(RESPONSE_CODE_404);
+                    return new MockResponse().setResponseCode(inputTestValues.get("RESPONSE_CODE_404"));
                 }
             };
             mockWebServer.setDispatcher(dispatcher);
@@ -208,7 +212,7 @@ public class AppTest {
                     .post(baseUrl + "/urls/" + mockUrlModelDB.getId() + "/check")
                     .asEmpty();
 
-            assertThat(responsePost.getStatus()).isEqualTo(RESPONSE_CODE_302);
+            assertThat(responsePost.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_302"));
             assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls/" + mockUrlModelDB.getId());
 
             HttpResponse<String> response = Unirest
@@ -239,7 +243,7 @@ public class AppTest {
                 @NotNull
                 @Override
                 public MockResponse dispatch(@NotNull RecordedRequest recordedRequest) throws InterruptedException {
-                    return new MockResponse().setResponseCode(RESPONSE_CODE_200).setBody(contentTestPage);
+                    return new MockResponse().setResponseCode(inputTestValues.get("RESPONSE_CODE_200")).setBody(contentTestPage);
                 }
             };
             mockWebServer.setDispatcher(dispatcher);
@@ -250,7 +254,7 @@ public class AppTest {
                     .post(baseUrl + "/urls/" + mockUrlModelDB.getId() + "/check")
                     .asEmpty();
 
-            assertThat(responsePost.getStatus()).isEqualTo(RESPONSE_CODE_302);
+            assertThat(responsePost.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_302"));
             assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls/" + mockUrlModelDB.getId());
             HttpResponse<String> response = Unirest
                     .get(baseUrl + "/urls/" + mockUrlModelDB.getId())
