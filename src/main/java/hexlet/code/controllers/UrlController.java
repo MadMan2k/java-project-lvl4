@@ -100,7 +100,9 @@ public final class UrlController {
         UrlModel urlModel = new UrlModel(inputURL);
         urlModel.save();
 
-        ctx.sessionAttribute("flash", "The site was successfully added");
+        String flashSuccess = " / Страница успешно добавлена";
+
+        ctx.sessionAttribute("flash", "The site was successfully added" + flashSuccess);
         ctx.sessionAttribute("flash-type", "success");
 
         ctx.redirect("/urls");
