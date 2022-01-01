@@ -161,7 +161,8 @@ public class AppTest {
             assertThat(newUrlModel.getName()).isEqualTo("https://www.example1.com");
             assertThat(newUrlModel.getCreatedAt()).isEqualTo(localDateTime);
             assertThat(newUrlModel.getUrlChecks().get(0).toString())
-                    .isEqualTo("UrlCheckModel{id=50, statusCode=200, title='newTitle', h1='newH1', description='null', createdAt=2022-01-01T01:00}");
+                    .isEqualTo("UrlCheckModel{id=50, statusCode=200, title='newTitle', "
+                            + "h1='newH1', description='null', createdAt=2022-01-01T01:00}");
 
 
         }
@@ -243,7 +244,8 @@ public class AppTest {
                 @NotNull
                 @Override
                 public MockResponse dispatch(@NotNull RecordedRequest recordedRequest) throws InterruptedException {
-                    return new MockResponse().setResponseCode(inputTestValues.get("RESPONSE_CODE_200")).setBody(contentTestPage);
+                    return new MockResponse().setResponseCode(inputTestValues.get("RESPONSE_CODE_200"))
+                            .setBody(contentTestPage);
                 }
             };
             mockWebServer.setDispatcher(dispatcher);
