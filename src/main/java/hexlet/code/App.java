@@ -57,7 +57,7 @@ public class App {
                 post(UrlController.getCreateURL());
                 path("{id}", () -> {
                     get(UrlController.getShowURL());
-                    path("check", () -> {
+                    path("checks", () -> {
                         post(UrlController.getCheckURL());
                     });
                 });

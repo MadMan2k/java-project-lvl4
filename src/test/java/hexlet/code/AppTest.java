@@ -210,7 +210,7 @@ public class AppTest {
             UrlModel mockUrlModelDB = new QUrlModel().name.equalTo(mockUrlModel.getName()).findOne();
 
             HttpResponse<String> responsePost = Unirest
-                    .post(baseUrl + "/urls/" + mockUrlModelDB.getId() + "/check")
+                    .post(baseUrl + "/urls/" + mockUrlModelDB.getId() + "/checks")
                     .asEmpty();
 
             assertThat(responsePost.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_302"));
@@ -253,7 +253,7 @@ public class AppTest {
             UrlModel mockUrlModelDB = new QUrlModel().name.equalTo(mockUrlModel.getName()).findOne();
 
             HttpResponse<String> responsePost = Unirest
-                    .post(baseUrl + "/urls/" + mockUrlModelDB.getId() + "/check")
+                    .post(baseUrl + "/urls/" + mockUrlModelDB.getId() + "/checks")
                     .asEmpty();
 
             assertThat(responsePost.getStatus()).isEqualTo(inputTestValues.get("RESPONSE_CODE_302"));
