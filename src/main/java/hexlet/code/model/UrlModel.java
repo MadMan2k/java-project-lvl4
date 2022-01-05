@@ -1,7 +1,6 @@
 package hexlet.code.model;
 
 import io.ebean.Model;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,15 +39,6 @@ public class UrlModel extends Model {
         createdAt();
         this.name = inputName;
     }
-
-//    /**
-//     * Save with current date.
-//     */
-//    @Override
-//    public void save() {
-//        createdAt();
-//        super.save();
-//    }
 
     /**
      * Current date for constructor.

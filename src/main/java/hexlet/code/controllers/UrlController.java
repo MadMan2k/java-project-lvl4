@@ -10,7 +10,6 @@ import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -75,12 +74,9 @@ public final class UrlController {
 
         UrlModel urlModel = new UrlModel(inputURL);
         urlModel.save();
-
         String flashRus = " / Страница успешно добавлена";
-
         ctx.sessionAttribute("flash", "The site was successfully added" + flashRus);
         ctx.sessionAttribute("flash-type", "success");
-
         ctx.redirect("/urls");
     }
 
@@ -100,7 +96,6 @@ public final class UrlController {
         }
 
         return normalizedURL;
-
     }
 
     public static void getShowURL(Context ctx) {
@@ -130,9 +125,7 @@ public final class UrlController {
         }
 
         String urlAsString = urlModel.getName();
-
         int statusCode;
-//        Document doc;
         Connection.Response response;
         UrlCheckModel urlCheckModel;
         try {
@@ -141,10 +134,6 @@ public final class UrlController {
                     .execute();
 
             urlCheckModel = createUrlCheckModel(response);
-
-
-//            doc = response.parse();
-//            statusCode = response.statusCode();
         } catch (Exception e) {
             if (e instanceof HttpStatusException) {
                 statusCode = ((HttpStatusException) e).getStatusCode();
@@ -163,36 +152,11 @@ public final class UrlController {
             return;
         }
 
-//        String title;
-//        try {
-//            title = doc.title();
-//        } catch (Exception e) {
-//            title = "";
-//        }
-//
-//        String h1;
-//        try {
-//            h1 = doc.select("h1").first().text();
-//        } catch (Exception e) {
-//            h1 = "";
-//        }
-//
-//        String description;
-//        try {
-//            description = doc.select("meta[name=description]").get(0).attr("content");
-//        } catch (Exception e) {
-//            description = "";
-//        }
-
-//        UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, title, h1, description);
-
         urlModel.addCheckToUrl(urlCheckModel);
         urlModel.save();
 
         ctx.attribute("urlModel", urlModel);
-
         String flashRus = " / Страница успешно проверена";
-
         ctx.sessionAttribute("flash", "The site was successfully checked" + flashRus);
         ctx.sessionAttribute("flash-type", "info");
         ctx.redirect("/urls/" + urlModel.getId());

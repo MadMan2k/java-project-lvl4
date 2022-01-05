@@ -57,15 +57,6 @@ public class UrlCheckModel extends Model implements Comparable<UrlCheckModel> {
         this.description = descriptionContent;
     }
 
-//    /**
-//     * Save with current date.
-//     */
-//    @Override
-//    public void save() {
-//        createdAt();
-//        super.save();
-//    }
-
     /**
      * Current date for constructor.
      */

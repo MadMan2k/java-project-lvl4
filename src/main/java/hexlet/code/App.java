@@ -42,9 +42,7 @@ public class App {
         });
 
         addRoutes(app);
-
         app.before(ctx -> ctx.attribute("ctx", ctx));
-
         return app;
     }
 
@@ -68,7 +66,6 @@ public class App {
 
     private static TemplateEngine getTemplateEngine() {
         TemplateEngine templateEngine = new TemplateEngine();
-
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("/templates/");
 
