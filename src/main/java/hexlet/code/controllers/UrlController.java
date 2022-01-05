@@ -11,6 +11,7 @@ import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -56,26 +57,7 @@ public final class UrlController {
             return;
         }
 
-
         String normalizedURL = getNormalizedURL(inputURL);
-
-
-
-
-//        inputURL = inputURL.toLowerCase(Locale.ROOT);
-//
-//        try {
-//            URL url = new URL(inputURL);
-//            inputURL = url.getProtocol() + "://" + url.getHost();
-//            if (url.getPort() != -1) {
-//                inputURL = inputURL + ":" + url.getPort();
-//            }
-//        } catch (Exception e) {
-//            ctx.sessionAttribute("flash", "Invalid URL");
-//            ctx.sessionAttribute("flash-type", "danger");
-//            ctx.redirect("/");
-//            return;
-//        }
 
         if ("Invalid URL".equals(normalizedURL)) {
             ctx.sessionAttribute("flash", "Invalid URL");
@@ -83,7 +65,6 @@ public final class UrlController {
             ctx.redirect("/");
             return;
         }
-
 
         if (new QUrlModel().name.equalTo(inputURL).exists()) {
             ctx.sessionAttribute("flash", "The site already exists in the database");
@@ -106,7 +87,7 @@ public final class UrlController {
     private static String getNormalizedURL(String inputURL) {
         inputURL = inputURL.toLowerCase(Locale.ROOT);
 
-        URL url = null;
+        URL url;
         try {
             url = new URL(inputURL);
         } catch (MalformedURLException e) {
@@ -138,13 +119,6 @@ public final class UrlController {
     }
 
     public static void getCheckURL(Context ctx) {
-        String title;
-        String h1;
-        String description;
-        int statusCode;
-        Document doc;
-        Connection.Response response;
-
         int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
 
         UrlModel urlModel = new QUrlModel()
@@ -157,12 +131,20 @@ public final class UrlController {
 
         String urlAsString = urlModel.getName();
 
+        int statusCode;
+//        Document doc;
+        Connection.Response response;
+        UrlCheckModel urlCheckModel;
         try {
             response = Jsoup.connect(urlAsString)
                     .timeout(TIMEOUT_LIMIT)
                     .execute();
-            doc = response.parse();
-            statusCode = response.statusCode();
+
+            urlCheckModel = createUrlCheckModel(response);
+
+
+//            doc = response.parse();
+//            statusCode = response.statusCode();
         } catch (Exception e) {
             if (e instanceof HttpStatusException) {
                 statusCode = ((HttpStatusException) e).getStatusCode();
@@ -170,7 +152,7 @@ public final class UrlController {
                 statusCode = NOT_FOUND_CODE;
             }
 
-            UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, "", "", "");
+            urlCheckModel = new UrlCheckModel(statusCode, "", "", "");
             urlModel.addCheckToUrl(urlCheckModel);
             urlModel.save();
             ctx.attribute("urlModel", urlModel);
@@ -181,25 +163,28 @@ public final class UrlController {
             return;
         }
 
-        try {
-            title = doc.title();
-        } catch (Exception e) {
-            title = "";
-        }
+//        String title;
+//        try {
+//            title = doc.title();
+//        } catch (Exception e) {
+//            title = "";
+//        }
+//
+//        String h1;
+//        try {
+//            h1 = doc.select("h1").first().text();
+//        } catch (Exception e) {
+//            h1 = "";
+//        }
+//
+//        String description;
+//        try {
+//            description = doc.select("meta[name=description]").get(0).attr("content");
+//        } catch (Exception e) {
+//            description = "";
+//        }
 
-        try {
-            h1 = doc.select("h1").first().text();
-        } catch (Exception e) {
-            h1 = "";
-        }
-
-        try {
-            description = doc.select("meta[name=description]").get(0).attr("content");
-        } catch (Exception e) {
-            description = "";
-        }
-
-        UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, title, h1, description);
+//        UrlCheckModel urlCheckModel = new UrlCheckModel(statusCode, title, h1, description);
 
         urlModel.addCheckToUrl(urlCheckModel);
         urlModel.save();
@@ -211,5 +196,34 @@ public final class UrlController {
         ctx.sessionAttribute("flash", "The site was successfully checked" + flashRus);
         ctx.sessionAttribute("flash-type", "info");
         ctx.redirect("/urls/" + urlModel.getId());
+    }
+
+    private static UrlCheckModel createUrlCheckModel(Connection.Response response) throws IOException {
+        int statusCode  = response.statusCode();;
+        Document doc = null;
+        doc = response.parse();
+
+        String title;
+        try {
+            title = doc.title();
+        } catch (Exception e) {
+            title = "";
+        }
+
+        String h1;
+        try {
+            h1 = doc.select("h1").first().text();
+        } catch (Exception e) {
+            h1 = "";
+        }
+
+        String description;
+        try {
+            description = doc.select("meta[name=description]").get(0).attr("content");
+        } catch (Exception e) {
+            description = "";
+        }
+
+        return new UrlCheckModel(statusCode, title, h1, description);
     }
 }
