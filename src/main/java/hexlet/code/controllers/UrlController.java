@@ -200,7 +200,7 @@ public final class UrlController {
 
     private static UrlCheckModel createUrlCheckModel(Connection.Response response) throws IOException {
         int statusCode  = response.statusCode();;
-        Document doc = null;
+        Document doc;
         doc = response.parse();
 
         String title;
