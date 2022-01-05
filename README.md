@@ -11,7 +11,7 @@
 
 Javalin application for web-page analizing, witch read `<h1>`, `<title>` and `<meta>` description content.
 
-![Analize example](/assets/images/output.png)
+![Analize example](/assets/images/output1.png)
 
 This application is a part of my project on [Hexlet School](https://ru.hexlet.io/). It's fully functional and ready to use.
 
