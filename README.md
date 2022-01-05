@@ -13,12 +13,12 @@ Javalin application for web-page analizing, witch read `<h1>`, `<title>` and `<m
 
 ![Analize example](/assets/images/output.png)
 
-This application is a part of my project on [Hexlet School](https://ru.hexlet.io/). It's fully functional and ready to use.
+This application is a part of my project at [Hexlet](https://ru.hexlet.io/). It's fully functional and ready to use.
 
 Feel free if you want to use my application! It's all explicitly in the public domain (I have to formally say that). You can grab a copy of the files to use and tweak as fits you best or use it as it is.
 
 ### How to use
 
-If you don't want download a code or just want to try it, you can use the version I've deployed on [Heroku](https://page-analyzer-project.herokuapp.com/), otherwise `make run` to start downloaded application.
+If you don't want download a code or just want to try it, you can use the version I've deployed on [Heroku](https://page-analyzer-project.herokuapp.com/), otherwise `make run` or run App.java from IDE to start downloaded application.
 
 Enjoy!

@@ -4,11 +4,11 @@ import io.javalin.http.Handler;
 
 public class MainController {
 
-    public static Handler getWelcome() {
-        return welcome;
-    }
+//    public static Handler getWelcome() {
+//        return welcome;
+//    }
 
-    private static Handler welcome = ctx -> {
+    public final static Handler welcome = ctx -> {
         ctx.render("index.html");
     };
 }

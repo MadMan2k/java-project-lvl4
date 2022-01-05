@@ -22,23 +22,23 @@ public final class UrlController {
     private static final int TIMEOUT_LIMIT = 10000;
     private static final int NOT_FOUND_CODE = 404;
 
-    public static Handler getListOfURLs() {
-        return listOfURLs;
-    }
+//    public static Handler getListOfURLs() {
+//        return listOfURLs;
+//    }
+//
+//    public static Handler getCreateURL() {
+//        return createURL;
+//    }
+//
+//    public static Handler getShowURL() {
+//        return showURL;
+//    }
+//
+//    public static Handler getCheckURL() {
+//        return checkURL;
+//    }
 
-    public static Handler getCreateURL() {
-        return createURL;
-    }
-
-    public static Handler getShowURL() {
-        return showURL;
-    }
-
-    public static Handler getCheckURL() {
-        return checkURL;
-    }
-
-    private static Handler listOfURLs = ctx -> {
+    public final static Handler listOfURLs = ctx -> {
         int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1) - 1;
 
         PagedList<UrlModel> pagedUrlModels = new QUrlModel()
@@ -63,7 +63,7 @@ public final class UrlController {
         ctx.render("URLs/index.html");
     };
 
-    private static Handler createURL = ctx -> {
+    public final static Handler createURL = ctx -> {
         String inputURL = ctx.formParam("url");
 
         if (inputURL == null) {
@@ -108,7 +108,7 @@ public final class UrlController {
         ctx.redirect("/urls");
     };
 
-    private static Handler showURL = ctx -> {
+    public final static Handler showURL = ctx -> {
         int id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
 
         UrlModel urlModel = new QUrlModel()
@@ -123,7 +123,7 @@ public final class UrlController {
         ctx.render("URLs/show.html");
     };
 
-    private static Handler checkURL = ctx -> {
+    public final static Handler checkURL = ctx -> {
         String title;
         String h1;
         String description;
@@ -192,8 +192,8 @@ public final class UrlController {
 
         ctx.attribute("urlModel", urlModel);
 
-        String consumeSessionAttribute = ctx.consumeSessionAttribute("flash");
-        System.out.println(consumeSessionAttribute);
+//        String consumeSessionAttribute = ctx.consumeSessionAttribute("flash");
+//        System.out.println(consumeSessionAttribute);
 
 
         String flashRus = " / Страница успешно проверена";
