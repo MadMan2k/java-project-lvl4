@@ -77,7 +77,7 @@ public final class UrlController {
 //            return;
 //        }
 
-        if ("Invalid URL".equals(normalizedURL) ) {
+        if ("Invalid URL".equals(normalizedURL)) {
             ctx.sessionAttribute("flash", "Invalid URL");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect("/");
