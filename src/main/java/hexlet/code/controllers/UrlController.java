@@ -199,9 +199,8 @@ public final class UrlController {
     }
 
     private static UrlCheckModel createUrlCheckModel(Connection.Response response) throws IOException {
-        int statusCode  = response.statusCode();;
-        Document doc;
-        doc = response.parse();
+        int statusCode  = response.statusCode();
+        Document doc = response.parse();
 
         String title;
         try {
