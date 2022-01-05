@@ -5,7 +5,6 @@ import hexlet.code.model.UrlModel;
 import hexlet.code.model.query.QUrlModel;
 import io.ebean.PagedList;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
 import io.javalin.http.NotFoundResponse;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
@@ -23,7 +22,7 @@ public final class UrlController {
     private static final int TIMEOUT_LIMIT = 10000;
     private static final int NOT_FOUND_CODE = 404;
 
-    public static void getListOfURLs (Context ctx) {
+    public static void getListOfURLs(Context ctx) {
         int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1) - 1;
 
         PagedList<UrlModel> pagedUrlModels = new QUrlModel()
@@ -73,7 +72,7 @@ public final class UrlController {
 //        ctx.render("URLs/index.html");
 //    };
 
-    public static void getCreateURL (Context ctx) {
+    public static void getCreateURL(Context ctx) {
         String inputURL = ctx.formParam("url");
 
         if (inputURL == null) {

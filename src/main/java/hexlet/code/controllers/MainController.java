@@ -1,7 +1,6 @@
 package hexlet.code.controllers;
 
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
 
 public class MainController {
 
