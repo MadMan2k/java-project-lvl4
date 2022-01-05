@@ -9,7 +9,7 @@
 
 ### About
 
-Javalin application for web-page analizing, witch read `<h1>`, `<tag>` and `<meta>` description content.
+Javalin application for web-page analizing, witch read `<h1>`, `<title>` and `<meta>` description content.
 
 ![Analize example](/assets/images/output.png)
 
