@@ -7,22 +7,18 @@
 
 # SEO Page analyzer
 
-```
-About
-```
+### About
 
-Simple Javalin application for web-page analizing, witch read `<h1>`, `<tag>` and `<meta>` description content.
+Javalin application for web-page analizing, witch read `<h1>`, `<tag>` and `<meta>` description content.
 
 ![Analize example](/assets/images/output.png)
 
-```
-How to use
-```
+This application is a part of my project on [Hexlet School](https://ru.hexlet.io/). It's fully functional and ready to use.
 
-This site was built using [Heroku](https://page-analyzer-project.herokuapp.com/)
+Feel free if you want to use my application! It's all explicitly in the public domain (I have to formally say that). You can grab a copy of the files to use and tweak as fits you best or use it as it is.
 
-This site was built using [Hexlet School](https://ru.hexlet.io/)
+### How to use
 
+If you don't want download a code or just want to try it, you can use the version I've deployed on [Heroku](https://page-analyzer-project.herokuapp.com/), otherwise `make run` to start downloaded application.
 
-    
-If you want to use my reset styles, then feel free! It's all explicitly in the public domain (I have to formally say that). You can grab a copy of the files to use and tweak as fits you best. If you're more of the copy-and-paste type, or just want an in-page preview of what you'll be getting, here it is. 
+Enjoy!
